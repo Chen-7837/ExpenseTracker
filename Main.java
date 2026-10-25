@@ -5,6 +5,10 @@ public class Main {
     public static void main(String[] args) {
 
         ExpenseManager manager=new ExpenseManager();
+        ExpenseFileStorage efs = new ExpenseFileStorage();
+        //读取文件中的历史消费，加入当前消费列表
+        manager.getExpenses().addAll(efs.loadExpenses());
+        //efs.loadExpenses()：读取文件，返回一个 ArrayList<Expense>。
         Scanner scanner = new Scanner(System.in);
         int choice = -1;
 
@@ -45,11 +49,11 @@ public class Main {
                     System.out.println("无效选项");
             }
         }
+
+        efs.saveExpenses(manager.getExpenses());
         scanner.close();//用完后再关掉
-
-
-
     }
+
 
 
         public static Expense inputExpense(Scanner scanner){

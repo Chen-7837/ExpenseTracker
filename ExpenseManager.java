@@ -5,6 +5,9 @@ public class ExpenseManager {
     //1.ArrayList：保存消费明细
     private final ArrayList<Expense> expenses = new ArrayList<>();
 
+    public ArrayList<Expense> getExpenses(){
+    return expenses;}
+
     //2.addExpense:添加消费
     public void addExpense(Expense expense) {
         expenses.add(expense);

@@ -1,92 +1,100 @@
 # ExpenseTracker
 
-## 1. 项目介绍
+一个基于 Java 的控制台个人记账系统，用于练习 Java 面向对象编程、集合、异常处理和文件 IO。
 
-ExpenseTracker 是一个使用 Java 编写的命令行个人记账系统，用于练习 Java 基础语法、面向对象编程和集合框架。
+当前版本：**v1.1**
 
-## 2. 项目功能
+## 一、项目功能
 
-- 添加消费记录：日期、类别、金额、备注
-- 查看所有消费明细
-- 按消费类别统计总金额
-- 对日期、类别和金额进行基本输入校验
-- 使用菜单循环选择功能并退出程序
+- 添加消费记录
+- 查看所有消费记录
+- 按消费类别统计金额
+- 校验日期、类别和金额等用户输入
+- 将消费记录保存到本地文件
+- 程序启动时自动加载历史消费记录
+- 程序退出时保存当前全部消费记录
 
-## 3. 项目结构
+## 二、项目结构
 
 ```text
 ExpenseTracker/
-├── Main.java
-├── Expense.java
-├── ExpenseManager.java
+├── src/
+│   ├── Main.java
+│   ├── Expense.java
+│   ├── ExpenseManager.java
+│   ├── ExpenseFileStorage.java
+│   └── expenses.txt
 └── README.md
 ```
 
-- `Main`：负责菜单显示、用户输入和程序流程控制。
+- `Main`：负责菜单、用户输入和程序运行流程。
 - `Expense`：表示一笔消费，保存日期、类别、金额和备注。
-- `ExpenseManager`：负责添加、展示消费记录和分类统计。
+- `ExpenseManager`：管理消费集合，提供添加、查看和分类统计功能。
+- `ExpenseFileStorage`：负责消费记录的文件保存和读取。
+- `expenses.txt`：用于持久化保存消费记录。
 
-## 4. 核心数据流
+## 三、数据存储格式
+
+每笔消费占一行，使用竖线 `|` 分隔字段。
 
 ```text
-用户输入
-    |
-    v
-Main.inputExpense()
-    |
-    v
-创建 Expense 对象
-    |
-    v
-ExpenseManager.addExpense()
-    |
-    v
-ArrayList<Expense>
-    |
-    +----> 查看消费明细
-    |
-    +----> 遍历记录并按类别累加
-                 |
-                 v
-          HashMap<String, Double>
-                 |
-                 v
-             输出统计结果
+日期|类别|金额|备注
 ```
 
-## 5. 涉及的知识点
+示例：
+
+```text
+2026-10-25|Food|25.0|早餐
+2026-10-25|Transport|3.0|地铁
+```
+
+当前实现约定各字段中不包含 `|`，以保证读取时能够正确拆分。
+
+## 四、程序运行流程
+
+1. 创建 `ExpenseManager` 和 `ExpenseFileStorage` 对象。
+2. 调用 `loadExpenses()` 读取历史记录。
+3. 将读取的消费记录加入当前集合。
+4. 用户通过控制台菜单添加、查看和统计消费。
+5. 用户退出时，调用 `saveExpenses()` 保存当前全部记录。
+
+## 五、主要学习知识点
 
 ### Java 基础与面向对象
-- 类、对象、构造方法、`this`
-- `private`、`final`、`static`
-- 实例方法与对象引用
-- `toString()` 和 `@Override`
-- 按职责划分类
 
-### 流程控制与输入处理
-- `while`、`switch`、`break`、`continue`
-- `Scanner` 的常用读取方法
-- `try-catch`
-- `InputMismatchException`
-- 输入校验与异常恢复
+- 类、对象、构造方法
+- 封装与 getter 方法
+- 方法调用、参数与返回值
+- `static` 方法
+- `toString()` 方法重写
 
-### 集合框架
-- `ArrayList<Expense>` 保存消费明细
-- `HashMap<String, Double>` 按类别汇总金额
+### 集合与数据处理
+
+- `ArrayList`
 - 增强 `for` 循环
-- `getOrDefault()` 与金额累加
+- `add()`、`addAll()`
+- 字符串拼接
+- `split()` 与字符串数组
+- `Double.parseDouble()`
 
-## 6. 当前局限
+### 异常处理与文件 IO
 
-- 数据只保存在内存中，程序退出后不会保留。
-- 尚未实现文件或数据库持久化。
-- 菜单输入非整数时仍可能触发未处理的异常。
-- 当前为命令行程序，没有图形界面或 Web 界面。
+- `try-catch`
+- `IOException`
+- `try-with-resources`
+- `File` 与 `exists()`
+- `FileWriter`、`BufferedWriter`
+- `FileReader`、`BufferedReader`
+- `write()`、`newLine()`、`readLine()`
+- 文件不存在时返回空列表
 
-## 7. 项目总结
+## 六、当前版本的注意事项
 
-通过这个项目，练习了从用户输入、数据校验、对象创建、集合管理，到分类统计的完整流程。
+- 文件路径使用相对路径 `src/expenses.txt`，依赖项目的运行工作目录。
+- 当前异常处理为基础版本，后续可进一步完善读取失败时的处理。
+- 文件数据格式暂不支持字段中包含分隔符 `|`。
+- 当前版本使用本地文本文件，不涉及数据库。
 
-本项目当前版本的核心功能已经完成，作为 Java 基础练习项目阶段性收尾。
+## 七、后续学习方向
 
-版本：v1.0
+完成当前版本后，可以继续学习 Lambda、Stream、MySQL、JDBC、Maven、JUnit 和 Spring Boot，并根据实际需求规划后续版本。
